@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Shipmate AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <meta name="theme-color" content="#0a9396">
+</head>
+<body>
+  <div class="container">
+    <h1>Shipmate AI</h1>
+    <form id="shipmateForm">
+      <label>What do you need assistance with?</label>
+      <input type="text" id="request" placeholder="e.g., What's my schedule today?" required>
+      <button type="submit">Ask Shipmate</button>
+    </form>
+    <div id="responseBox" class="output-box"></div>
+  </div>
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+  </script>
+</body>
+</html>
