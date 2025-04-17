@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
+from modules.calendar_agent.routes import router as calendar_router
 import os
 
 # Import backend router for Shipmate's modular logic
@@ -14,6 +15,7 @@ app.mount("/frontend", StaticFiles(directory=frontend_path), name="frontend")
 
 # Register backend router
 app.include_router(shipmate_router, tags=["Shipmate Core"])
+app.include_router(calendar_router, tags=["Calendar Agent"])
 
 # Basic root check
 @app.get("/")
