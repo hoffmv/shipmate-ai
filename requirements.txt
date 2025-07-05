@@ -1,7 +1,14 @@
+flask
+jinja2
 pandas
 requests
 matplotlib
-jinja2
-flask
 python-dateutil
 PyMuPDF
+sentence-transformers
+scikit-learn
+numpy
+uuid
+openpyxl
+sqlite-utils
+gunicorn
