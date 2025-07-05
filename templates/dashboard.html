@@ -1,0 +1,131 @@
+<!-- shipmate_ai/templates/dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛡️ Shipmate Tactical Dashboard</title>
+</head>
+<body style="background-color: #202942; color: white; font-family: Arial, sans-serif; text-align: center; padding: 20px;">
+
+    <h1 style="font-size: 28px; margin-bottom: 20px;">🛡️ Shipmate Mobile Command</h1>
+
+    <!-- Tactical Profit/Loss Summary -->
+    <div style="margin-top: 10px; padding: 15px; border-radius: 10px; background-color: #2E3B55;">
+        <h2 style="font-size: 24px;">📈 Monthly P/L Summary</h2>
+        {% if net_profit_loss >= 0 %}
+            <p style="color: lightgreen; font-size: 22px;">🟢 Net Profit: ${{ net_profit_loss | round(2) }}</p>
+        {% else %}
+            <p style="color: red; font-size: 22px;">🔴 Net Loss: ${{ net_profit_loss | round(2) }}</p>
+        {% endif %}
+    </div>
+
+    <!-- Download Latest Reports Button -->
+    <div style="margin-top: 30px;">
+        <a href="/download-latest-reports" 
+           style="padding: 14px 28px; font-size: 18px; font-weight: bold; background-color: #4682B4; color: white; border-radius: 10px; text-decoration: none;">
+            📥 Download Latest Commander Reports
+        </a>
+    </div>
+
+    <!-- Force Generate Reports Button -->
+    <div style="margin-top: 20px;">
+        <a href="/force-generate-reports" 
+           style="padding: 14px 28px; font-size: 18px; font-weight: bold; background-color: #B22222; color: white; border-radius: 10px; text-decoration: none;">
+            🛡️ Force Generate Monthly Reports
+        </a>
+    </div>
+
+    <!-- Tactical Risk Management Section -->
+    <div style="margin-top: 30px; padding: 15px; border-radius: 10px; background-color: #2E3B55;">
+        <h2 style="font-size: 24px;">🛡️ Sector Lockout Status</h2>
+        {% if lockout_status %}
+            {% for sector, locked in lockout_status.items() %}
+                {% if locked %}
+                    <p style="color: red; font-size: 20px;">❌ {{ sector }} - LOCKED</p>
+                {% else %}
+                    <p style="color: lightgreen; font-size: 20px;">✅ {{ sector }} - OPEN</p>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p style="color: gray; font-size: 18px;">No lockout data available.</p>
+        {% endif %}
+    </div>
+
+    <!-- Voice Command Center -->
+    <div style="margin-top: 30px; padding: 15px; border-radius: 10px; background-color: #2E3B55;">
+        <h2 style="font-size: 24px;">🎙️ Voice Command Center</h2>
+        <form action="/voice-command" method="POST" id="voiceCommandForm">
+            <input type="text" id="voice_command" name="voice_command" 
+                   placeholder="Speak your order, Captain..." 
+                   style="width: 80%; padding: 12px; font-size: 16px; border-radius: 8px; margin-bottom: 10px;">
+            <br>
+            <button type="submit" 
+                    style="padding: 12px 24px; font-size: 18px; font-weight: bold; background-color: #4CAF50; color: white; border-radius: 10px;">
+                🎙️ Execute Command
+            </button>
+        </form>
+        <div style="margin-top: 10px;">
+            <button onclick="startListening()" 
+                    style="padding: 10px 20px; font-size: 16px; background-color: #6A5ACD; color: white; border-radius: 10px;">
+                🎤 Start Voice Input
+            </button>
+        </div>
+    </div>
+
+    <!-- Tactical Notifications Center -->
+    <div style="margin-top: 30px; padding: 15px; border-radius: 10px; background-color: #2E3B55;">
+        <h2 style="font-size: 24px;">📩 Latest Field Alerts</h2>
+        {% if notifications %}
+            {% for note in notifications %}
+                <p style="font-size: 16px;">🕒 {{ note.timestamp }}<br>{{ note.message }}</p>
+            {% endfor %}
+        {% else %}
+            <p style="color: gray; font-size: 18px;">No field alerts available.</p>
+        {% endif %}
+    </div>
+
+    <!-- Tactical Financial Heatmap Section -->
+    <div style="margin-top: 30px; padding: 15px; border-radius: 10px; background-color: #2E3B55;">
+        <h2 style="font-size: 24px;">📅 Monthly Financial Heatmap</h2>
+        {% if heatmap_data %}
+            {% for day, pl in heatmap_data.items() %}
+                {% if pl >= 0 %}
+                    <p style="color: lightgreen; font-size: 16px;">🟢 {{ day }}: +${{ pl | round(2) }}</p>
+                {% else %}
+                    <p style="color: red; font-size: 16px;">🔴 {{ day }}: -${{ pl | round(2) }}</p>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p style="color: gray; font-size: 18px;">No profit/loss data available.</p>
+        {% endif %}
+    </div>
+
+    <script>
+        function startListening() {
+            if (!('webkitSpeechRecognition' in window)) {
+                alert("❌ Voice recognition not supported in this browser.");
+                return;
+            }
+
+            const recognition = new webkitSpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            recognition.start();
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('voice_command').value = transcript;
+                document.getElementById('voiceCommandForm').submit();
+            };
+
+            recognition.onerror = function(event) {
+                alert("❌ Voice recognition error: " + event.error);
+            };
+        }
+    </script>
+
+</body>
+</html>

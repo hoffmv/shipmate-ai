@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  shipmate:
+    container_name: shipmate
+    build: .
+    volumes:
+      - ./data:/app/data
+    environment:
+      - ENV=production
+    restart: unless-stopped

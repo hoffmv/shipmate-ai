@@ -1,0 +1,7 @@
+pandas
+requests
+matplotlib
+jinja2
+flask
+python-dateutil
+PyMuPDF
