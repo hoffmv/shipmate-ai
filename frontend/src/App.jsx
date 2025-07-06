@@ -2,8 +2,15 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./Layout";
 
-// Actual pages – plug your real components in here
+// Core Pages
 import FinanceDashboard from "./pages/FinanceDashboard";
+import GoalEditor from "./pages/GoalEditor";
+import PaymentCalendar from "./pages/PaymentCalendar";
+import AccountEditor from "./pages/AccountEditor";
+import DocumentUploader from "./pages/DocumentUploader";
+import LedgerViewer from "./pages/LedgerViewer";
+
+// Other Divisions
 import TradingDashboard from "./pages/TradingDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import SchedulingDashboard from "./pages/SchedulingDashboard";
@@ -17,6 +24,11 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="finance" element={<FinanceDashboard />} />
+          <Route path="goals" element={<GoalEditor />} />
+          <Route path="calendar" element={<PaymentCalendar />} />
+          <Route path="accounts" element={<AccountEditor />} />
+          <Route path="upload" element={<DocumentUploader />} />
+          <Route path="ledger" element={<LedgerViewer />} />
           <Route path="trading" element={<TradingDashboard />} />
           <Route path="admin" element={<AdminDashboard />} />
           <Route path="scheduling" element={<SchedulingDashboard />} />

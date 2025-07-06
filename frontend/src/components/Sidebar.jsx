@@ -4,6 +4,11 @@ import { NavLink } from 'react-router-dom';
 const Sidebar = () => {
   const navItems = [
     { label: "Gold Digger Command", to: "/finance" },
+    { label: "Goal Editor", to: "/goals" },
+    { label: "Payment Calendar", to: "/calendar" },
+    { label: "Account Editor", to: "/accounts" },
+    { label: "Upload Statements", to: "/upload" },
+    { label: "Ledger Viewer", to: "/ledger" },
     { label: "Casino Royale Division", to: "/trading" },
     { label: "Clipboard Warriors HQ", to: "/admin" },
     { label: "Time Lords Operations", to: "/scheduling" },
@@ -13,7 +18,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="w-64 h-full bg-[#202942] text-white">
+    <div className="w-64 h-full bg-[#202942] text-white p-5">
       <h2 className="text-md font-semibold mb-4">Shipmate Divisions</h2>
       <ul className="space-y-2 text-sm">
         {navItems.map((item) => (

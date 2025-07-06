@@ -1,7 +1,5 @@
-import re
 import fitz  # PyMuPDF
-from datetime import datetime
-
+import re
 
 def extract_text_from_pdf(file_path):
     doc = fitz.open(file_path)
@@ -10,36 +8,52 @@ def extract_text_from_pdf(file_path):
         full_text += page.get_text()
     return full_text
 
+def extract_transactions_from_amex_lines(lines):
+    transactions = []
+    temp = {}
+    for i, line in enumerate(lines):
+        line = line.strip()
+        # Match MM/DD/YY or MM/DD/25
+        if re.match(r"\d{2}/\d{2}/\d{2,4}", line):
+            if temp:
+                transactions.append(temp)
+                temp = {}
+
+            temp["date"] = line[:5]  # Store MM/DD
+            temp["description"] = ""
+            temp["amount"] = None
+
+        elif "$" in line:
+            try:
+                amt = float(re.sub(r"[^\d.]", "", line))
+                temp["amount"] = amt
+            except:
+                continue
+
+        elif temp.get("description") is not None:
+            # Append merchant info as description
+            temp["description"] += (" " + line.strip())
+
+    if temp and temp.get("amount") and temp.get("description"):
+        transactions.append(temp)
+
+    return transactions
 
 def extract_transactions_from_text(text):
     lines = text.splitlines()
-    transactions = []
-    pattern = re.compile(r"(\d{2}/\d{2})\s+(.+?)\s+(-?\$?\d+[.,]?\d*)")
 
+    print("\n🔍 RAW LINES FROM PDF:")
     for line in lines:
-        match = pattern.search(line)
-        if match:
-            date_str, description, amount = match.groups()
-            try:
-                amount = float(amount.replace("$", "").replace(",", ""))
-                transactions.append({
-                    "date": date_str,
-                    "description": description.strip(),
-                    "amount": amount
-                })
-            except ValueError:
-                continue
+        print(line)
+
+    transactions = extract_transactions_from_amex_lines(lines)
+
+    print(f"\n🧾 Parsed {len(transactions)} transactions:")
+    for t in transactions:
+        print(t)
 
     return transactions
-
 
 def parse_statement(file_path):
     text = extract_text_from_pdf(file_path)
-    transactions = extract_transactions_from_text(text)
-    return transactions
-
-
-# Example usage (disabled in module mode):
-# transactions = parse_statement("/mnt/data/example.pdf")
-# for t in transactions:
-#     print(t)
+    return extract_transactions_from_text(text)

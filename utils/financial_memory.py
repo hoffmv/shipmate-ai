@@ -1,4 +1,3 @@
-
 # financial_memory.py
 
 import json
@@ -6,9 +5,16 @@ import os
 from typing import Dict, List, Any
 
 class FinancialMemory:
-    def __init__(self, filepath: str = "memory/financial_memory.json"):
+    def __init__(self, filepath: str = None):
+        if not filepath:
+            default_dir = os.path.join(os.getcwd(), "data")
+            os.makedirs(default_dir, exist_ok=True)
+            filepath = os.path.join(default_dir, "financial_memory.json")
+        else:
+            os.makedirs(os.path.dirname(filepath), exist_ok=True)
+
         self.filepath = filepath
-        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+
         if not os.path.exists(self.filepath):
             with open(self.filepath, 'w') as f:
                 json.dump({

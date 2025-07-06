@@ -1,0 +1,39 @@
+{
+  "accounts": [
+    {
+      "name": "0055635946",
+      "type": "checking",
+      "balance": 137.43,
+      "buffer_required": 100.0,
+      "last_updated": "2025-07-05"
+    },
+    {
+      "name": "0055635938",
+      "type": "checking",
+      "balance": 418.49,
+      "buffer_required": 100.0,
+      "last_updated": "2025-07-05"
+    },
+    {
+      "name": "7192983158",
+      "type": "checking",
+      "balance": 3998.05,
+      "buffer_required": 100.0,
+      "last_updated": "2025-07-05"
+    },
+    {
+      "name": "7001839864",
+      "type": "checking",
+      "balance": 13251.79,
+      "buffer_required": 100.0,
+      "last_updated": "2025-07-05"
+    },
+    {
+      "name": "3001750359",
+      "type": "savings",
+      "balance": 894.94,
+      "buffer_required": 100.0,
+      "last_updated": "2025-07-05"
+    }
+  ]
+}
